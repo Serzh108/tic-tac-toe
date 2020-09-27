@@ -1,17 +1,14 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Board from './components/Board';
+import Board1 from './components/Board1';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <p>Initialization of project</p>
-      </header>
+      <h2 className="header">Хрестики - нулики</h2>
+      {/* <Board /> */}
+      <Board1 />
     </div>
   );
 }
