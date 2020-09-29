@@ -24,7 +24,7 @@ const initialGameState = {
 
 function Board1() {
   const [field, setField] = useState(initialField);
-  const [currentGamer, setcurrentGamer] = useState(1);
+  const [currentGamer, setCurrentGamer] = useState(1);
   const [isFirstStepChoice, setisFirstStepChoice] = useState(false);
   const [isGameOver, setIsGameOver] = useState(true);
   const [isWinner, setIsWinner] = useState(false);
@@ -44,7 +44,7 @@ function Board1() {
     let next;
     do {
       next = Math.floor(Math.random() * 9);
-      console.log('next = ', next, ' curField[next] = ', curField[next]);
+      // console.log('next = ', next, ' curField[next] = ', curField[next]);
     } while (curField[next] !== null);
     return next;
   };
@@ -53,7 +53,7 @@ function Board1() {
     console.log('Rendered! (from useEffect)');
     // setGameState(prev => ({...prev, "currentGamer": 2}));
     // setGameState(prev => ({...prev, "score": {...prev.score, 1: 5}}));
-  }, [field]);
+  }, []);
 
   const selectContent = item => {
     if (item === 2)
@@ -73,49 +73,53 @@ function Board1() {
     if (!e.target.id) return;
     const id = Number(e.target.id);
 
-    isCompGamer && checkCurrentFieldComp();
+    // isCompGamer && checkCurrentFieldComp();
+    // checkCurrentField(id);
 
-    checkCurrentField(id);
-    // let arr = [...field];
-    // arr[id] = currentGamer;
-    // setField([...arr]);
-    // checkResult(arr);
-    // currentGamer === 1 ? setcurrentGamer(2) : setcurrentGamer(1);
+    let arr = [...field];
+    arr[id] = currentGamer;
+    setField([...arr]);
+    const finishGame = checkResult(arr);
+    if (!isCompGamer && !finishGame) {
+      currentGamer === 1 ? setCurrentGamer(2) : setCurrentGamer(1);
+    }
+    // currentGamer === 1 ? setCurrentGamer(2) : setCurrentGamer(1);
 
-    // if (isCompGamer) {
-    //   let arr = [...field];
-    //   // const id = compStep(arr);
-    //   // console.log('next step = ',  id);
-    //   // arr[id] = currentGamer;
-    //   arr[compStep(arr)] = currentGamer;
-    //   setField([...arr]);
-    //   checkResult(arr);
-    //   currentGamer === 1 ? setcurrentGamer(2) : setcurrentGamer(1);
-    // }
+    if (isCompGamer && !finishGame) {
+      // let arr = [...field];
+      // const id = compStep(arr);
+      // arr[id] = currentGamer;
+      let compGamer = 2;
+      currentGamer === 1 ? (compGamer = 2) : (compGamer = 1);
+      arr[compStep(arr)] = compGamer;
+      setField([...arr]);
+      checkResult(arr);
+      // currentGamer === 1 ? setCurrentGamer(2) : setCurrentGamer(1);
+    }
     // isCompGamer && setTimeout(() => checkCurrentFieldComp(), 5000);
   };
 
-  const checkCurrentFieldComp = () => {
-    let arr1 = [...field];
-    console.log('arr1 comp :', arr1);
-    console.log('currentGamer comp = ', currentGamer);
-    arr1[compStep(arr1)] = currentGamer;
-    setField([...arr1]);
-    checkResult(arr1);
-    currentGamer === 1 ? setcurrentGamer(2) : setcurrentGamer(1);
-  };
+  // const checkCurrentFieldComp = () => {
+  //   const arr1 = [...field];
+  //   console.log('arr1 comp :', arr1);
+  //   console.log('currentGamer comp = ', currentGamer);
+  //   arr1[compStep(arr1)] = currentGamer;
+  //   setField([...arr1]);
+  //   checkResult(arr1);
+  //   currentGamer === 1 ? setCurrentGamer(2) : setCurrentGamer(1);
+  // };
 
-  const checkCurrentField = id => {
-    console.log('id', id);
-    let arr = [...field];
-    console.log('arr', arr);
-    console.log('currentGamer', currentGamer);
-    arr[id] = currentGamer;
-    console.log('arr + currentGamer', arr);
-    setField([...arr]);
-    checkResult(arr);
-    currentGamer === 1 ? setcurrentGamer(2) : setcurrentGamer(1);
-  };
+  // const checkCurrentField = id => {
+  //   console.log('id', id);
+  //   const arr = [...field];
+  //   console.log('arr', arr);
+  //   console.log('currentGamer', currentGamer);
+  //   arr[id] = currentGamer;
+  //   console.log('arr + currentGamer', arr);
+  //   setField([...arr]);
+  //   checkResult(arr);
+  //   currentGamer === 1 ? setCurrentGamer(2) : setCurrentGamer(1);
+  // };
 
   const verify = testArray => {
     const set1 = new Set(testArray);
@@ -126,6 +130,7 @@ function Board1() {
       setScore(prev => ({ ...prev, [winner]: prev[winner] + 1 }));
       setIsGameOver(true);
       setIsWinner(true);
+      setCurrentGamer(testArray[0]);
       return true;
     }
   };
@@ -148,14 +153,14 @@ function Board1() {
       for (let i = j * 3; i < 3 * (j + 1); i++) rowArr.push(fieldArr[i]);
       if (verify(rowArr)) {
         console.log('Game over!!!');
-        return;
+        return true;
       }
 
       const columnArr = [];
       for (let i = 0; i < 3; i++) columnArr.push(fieldArr[i * 3 + j]);
       if (verify(columnArr)) {
         console.log('Game over!!!');
-        return;
+        return true;
       }
 
       downArr.push(fieldArr[j + j * 3]);
@@ -164,11 +169,11 @@ function Board1() {
 
     if (verify(downArr)) {
       console.log('Game over!!!');
-      return;
+      return true;
     }
     if (verify(upArr)) {
       console.log('Game over!!!');
-      return;
+      return true;
     }
 
     !isWinner && verifyNoWinner(fieldArr);
@@ -195,7 +200,7 @@ function Board1() {
     if (choicedSign.nodeName !== 'svg') return;
     if (!choicedSign.id) return;
     const id = Number(choicedSign.id);
-    setcurrentGamer(id);
+    setCurrentGamer(id);
     setisFirstStepChoice(false);
   };
 
@@ -262,7 +267,7 @@ function Board1() {
 
       {isWinner && (
         <div className={styles.winBox}>
-          {currentGamer === 2 ? (
+          {currentGamer === 1 ? (
             <CloseOutlinedIcon
               id="1"
               style={{ color: '#0b24fb', fontSize: '56' }}
@@ -273,7 +278,7 @@ function Board1() {
               style={{ color: '#fc2e34', fontSize: '56' }}
             />
           )}
-          <h2 style={{ color: currentGamer === 1 ? '#fc2e34' : '#0b24fb' }}>
+          <h2 style={{ color: currentGamer === 1 ? '#0b24fb' : '#fc2e34' }}>
             - you win!!!
           </h2>
         </div>
