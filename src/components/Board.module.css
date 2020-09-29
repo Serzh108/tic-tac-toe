@@ -1,3 +1,10 @@
+.scoreBox,
+.playerBox,
+.winBox {
+  margin-bottom: 6px;
+  display: flex;
+}
+
 .container {
   display: flex;
   flex-wrap: wrap;
@@ -21,8 +28,8 @@
 }
 
 .winBox h2 {
-  margin: 10px;
-  /* color: #f00; */
+  margin: 0 0 10px 0;
+  line-height: 1.2;
 }
 
 .winBox button {
