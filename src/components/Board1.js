@@ -208,33 +208,28 @@ function Board1() {
     <>
       <div className={styles.scoreBox}>
         <div>{`Game score: ${score[1]} (`}</div>
-        <div>
-          <CloseOutlinedIcon
-            id="1"
-            style={{ color: '#0b24fb', fontSize: '32', paddingTop: '6' }}
-          />
+        <div style={{ paddingTop: '4px' }}>
+          <CloseOutlinedIcon id="1" style={{ color: '#0b24fb' }} />
         </div>
         <div>{`) : ${score[2]} (`}</div>
-        <div>
+        <div style={{ paddingTop: '4px' }}>
           <RadioButtonUncheckedOutlinedIcon
             id="2"
-            style={{ color: '#fc2e34', fontSize: '32', paddingTop: '6' }}
+            style={{ color: '#fc2e34' }}
           />
         </div>
         {') '}
       </div>
       <div className={styles.playerBox}>
-        <div>Current player :</div>
-        <div>
+        {/* <div>Current player :</div> */}
+        <p>Current player :</p>
+        <div style={{ paddingLeft: '4px', paddingTop: '4px' }}>
           {currentGamer === 1 ? (
-            <CloseOutlinedIcon
-              id="1"
-              style={{ color: '#0b24fb', fontSize: '32', paddingTop: '8' }}
-            />
+            <CloseOutlinedIcon id="1" style={{ color: '#0b24fb' }} />
           ) : (
             <RadioButtonUncheckedOutlinedIcon
               id="2"
-              style={{ color: '#fc2e34', fontSize: '32', paddingTop: '8' }}
+              style={{ color: '#fc2e34' }}
             />
           )}
         </div>
