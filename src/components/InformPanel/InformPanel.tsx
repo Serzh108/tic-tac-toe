@@ -29,11 +29,11 @@ export default function InformPanel({
     <>
       <div className={styles.scoreBox}>
         <div>{`Game score: ${score[1]} (`}</div>
-        <div style={{ paddingTop: '4px' }}>
+        <div className={styles.playerItem}>
           <CloseOutlinedIcon id="1" style={{ color: '#0b24fb' }} />
         </div>
         <div>{`) : ${score[2]} (`}</div>
-        <div style={{ paddingTop: '4px' }}>
+        <div className={styles.playerItem}>
           <RadioButtonUncheckedOutlinedIcon
             id="2"
             style={{ color: '#fc2e34' }}
