@@ -204,8 +204,32 @@ function Board1() {
     setisFirstStepChoice(false);
   };
 
+  const CopyToClipboard = () => {
+    const linkToGame = 'https://tic-tac-toe-serzh108.netlify.app/';
+    navigator.clipboard.writeText(linkToGame).then(
+      function () {
+        alert(`Copy link to clipboard: ${linkToGame}`);
+      },
+      function (err) {
+        alert(`Could not copy link: ${err}`);
+      },
+    );
+  };
+
   return (
     <>
+      <div>
+        <Button
+          variant="outlined"
+          size="small"
+          color="primary"
+          style={{ marginBottom: '6px' }}
+          onClick={CopyToClipboard}
+        >
+          copy game link to clipboard
+        </Button>
+      </div>
+
       <div className={styles.scoreBox}>
         <div>{`Game score: ${score[1]} (`}</div>
         <div style={{ paddingTop: '4px' }}>
@@ -265,12 +289,22 @@ function Board1() {
           {currentGamer === 1 ? (
             <CloseOutlinedIcon
               id="1"
-              style={{ color: '#0b24fb', fontSize: '56' }}
+              style={{
+                color: '#0b24fb',
+                fontSize: '1.5em',
+                paddingTop: '8px',
+                paddingRight: '6px',
+              }}
             />
           ) : (
             <RadioButtonUncheckedOutlinedIcon
               id="2"
-              style={{ color: '#fc2e34', fontSize: '56' }}
+              style={{
+                color: '#fc2e34',
+                fontSize: '1.5em',
+                paddingTop: '8px',
+                paddingRight: '6px',
+              }}
             />
           )}
           <h2 style={{ color: currentGamer === 1 ? '#0b24fb' : '#fc2e34' }}>
