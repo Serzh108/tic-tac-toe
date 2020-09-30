@@ -1,14 +1,13 @@
 import React from 'react';
 import './App.css';
-// import Board from './components/Board';
-import Board1 from './components/Board1';
+import Header from './components/Header/Header';
+import Board from './components/Board/Board';
 
 function App() {
   return (
     <div className="App">
-      <h2 className="header">Хрестики - нулики</h2>
-      {/* <Board /> */}
-      <Board1 />
+      <Header />
+      <Board />
     </div>
   );
 }

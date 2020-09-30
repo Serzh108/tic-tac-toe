@@ -1,0 +1,9 @@
+.winBox {
+  margin-bottom: 6px;
+  display: flex;
+}
+
+.winBox h2 {
+  margin: 0 0 10px 0;
+  line-height: 1.2;
+}

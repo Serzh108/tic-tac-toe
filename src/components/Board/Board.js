@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import RadioButtonUncheckedOutlinedIcon from '@material-ui/icons/RadioButtonUncheckedOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+// import Button from '@material-ui/core/Button';
+// import Checkbox from '@material-ui/core/Checkbox';
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
+import InformPanel from '../InformPanel/InformPanel.tsx';
+import Winner from '../Winner/Winner';
+import ControlButtons from '../ControlButtons/ControlButtons';
+import ChoiceFirst from '../ChoiceFirst/ChoiceFirst';
 import styles from './Board.module.css';
 
 const initialField = [null, null, null, null, null, null, null, null, null];
@@ -22,7 +26,7 @@ const initialGameState = {
   },
 };
 
-function Board1() {
+function Board() {
   const [field, setField] = useState(initialField);
   const [currentGamer, setCurrentGamer] = useState(1);
   const [isFirstStepChoice, setisFirstStepChoice] = useState(false);
@@ -33,7 +37,6 @@ function Board1() {
 
   const [isCompGamer, setIsCompGamer] = useState(false);
   const handleCheckbox = event => {
-    // isGameOver &&
     setIsCompGamer(event.target.checked);
   };
 
@@ -44,7 +47,6 @@ function Board1() {
     let next;
     do {
       next = Math.floor(Math.random() * 9);
-      // console.log('next = ', next, ' curField[next] = ', curField[next]);
     } while (curField[next] !== null);
     return next;
   };
@@ -73,53 +75,23 @@ function Board1() {
     if (!e.target.id) return;
     const id = Number(e.target.id);
 
-    // isCompGamer && checkCurrentFieldComp();
-    // checkCurrentField(id);
-
     let arr = [...field];
     arr[id] = currentGamer;
     setField([...arr]);
     const finishGame = checkResult(arr);
+
     if (!isCompGamer && !finishGame) {
       currentGamer === 1 ? setCurrentGamer(2) : setCurrentGamer(1);
     }
-    // currentGamer === 1 ? setCurrentGamer(2) : setCurrentGamer(1);
 
     if (isCompGamer && !finishGame) {
-      // let arr = [...field];
-      // const id = compStep(arr);
-      // arr[id] = currentGamer;
       let compGamer = 2;
       currentGamer === 1 ? (compGamer = 2) : (compGamer = 1);
       arr[compStep(arr)] = compGamer;
       setField([...arr]);
       checkResult(arr);
-      // currentGamer === 1 ? setCurrentGamer(2) : setCurrentGamer(1);
     }
-    // isCompGamer && setTimeout(() => checkCurrentFieldComp(), 5000);
   };
-
-  // const checkCurrentFieldComp = () => {
-  //   const arr1 = [...field];
-  //   console.log('arr1 comp :', arr1);
-  //   console.log('currentGamer comp = ', currentGamer);
-  //   arr1[compStep(arr1)] = currentGamer;
-  //   setField([...arr1]);
-  //   checkResult(arr1);
-  //   currentGamer === 1 ? setCurrentGamer(2) : setCurrentGamer(1);
-  // };
-
-  // const checkCurrentField = id => {
-  //   console.log('id', id);
-  //   const arr = [...field];
-  //   console.log('arr', arr);
-  //   console.log('currentGamer', currentGamer);
-  //   arr[id] = currentGamer;
-  //   console.log('arr + currentGamer', arr);
-  //   setField([...arr]);
-  //   checkResult(arr);
-  //   currentGamer === 1 ? setCurrentGamer(2) : setCurrentGamer(1);
-  // };
 
   const verify = testArray => {
     const set1 = new Set(testArray);
@@ -137,46 +109,40 @@ function Board1() {
 
   const verifyNoWinner = testArray => {
     const set1 = new Set(testArray);
-    if (set1.has(null)) return;
+    if (set1.has(null)) return false;
     console.log('No winner!!!');
     setIsGameOver(true);
     setIsNoWinner(true);
-    // return true;
+    return true;
   };
 
   const checkResult = fieldArr => {
     const downArr = [];
     const upArr = [];
+    let gameOver = false;
 
     for (let j = 0; j < 3; j++) {
       const rowArr = [];
       for (let i = j * 3; i < 3 * (j + 1); i++) rowArr.push(fieldArr[i]);
-      if (verify(rowArr)) {
-        console.log('Game over!!!');
-        return true;
-      }
+      if (verify(rowArr)) gameOver = true;
 
       const columnArr = [];
       for (let i = 0; i < 3; i++) columnArr.push(fieldArr[i * 3 + j]);
-      if (verify(columnArr)) {
-        console.log('Game over!!!');
-        return true;
-      }
+      if (verify(columnArr)) gameOver = true;
 
       downArr.push(fieldArr[j + j * 3]);
       upArr.push(fieldArr[(j + 1) * 2]);
     }
 
-    if (verify(downArr)) {
-      console.log('Game over!!!');
-      return true;
-    }
-    if (verify(upArr)) {
-      console.log('Game over!!!');
-      return true;
+    if (verify(downArr)) gameOver = true;
+    if (verify(upArr)) gameOver = true;
+
+    if (!gameOver) {
+      verifyNoWinner(fieldArr) && (gameOver = true);
     }
 
-    !isWinner && verifyNoWinner(fieldArr);
+    gameOver && console.log('GAME OVER!!!');
+    return gameOver;
   };
 
   const restartHandler = () => {
@@ -204,33 +170,16 @@ function Board1() {
     setisFirstStepChoice(false);
   };
 
-  const CopyToClipboard = () => {
-    const linkToGame = 'https://tic-tac-toe-serzh108.netlify.app/';
-    navigator.clipboard.writeText(linkToGame).then(
-      function () {
-        alert(`Copy link to clipboard: ${linkToGame}`);
-      },
-      function (err) {
-        alert(`Could not copy link: ${err}`);
-      },
-    );
-  };
-
   return (
     <>
-      <div>
-        <Button
-          variant="outlined"
-          size="small"
-          color="primary"
-          style={{ marginBottom: '6px' }}
-          onClick={CopyToClipboard}
-        >
-          copy game link to clipboard
-        </Button>
-      </div>
-
-      <div className={styles.scoreBox}>
+      <InformPanel
+        score={score}
+        currentGamer={currentGamer}
+        isCompGamer={isCompGamer}
+        isGameOver={isGameOver}
+        handleCheckbox={handleCheckbox}
+      />
+      {/* <div className={styles.scoreBox}>
         <div>{`Game score: ${score[1]} (`}</div>
         <div style={{ paddingTop: '4px' }}>
           <CloseOutlinedIcon id="1" style={{ color: '#0b24fb' }} />
@@ -245,9 +194,8 @@ function Board1() {
         {') '}
       </div>
       <div className={styles.playerBox}>
-        {/* <div>Current player :</div> */}
         <p>Current player :</p>
-        <div style={{ paddingLeft: '4px', paddingTop: '4px' }}>
+        <div style={{ paddingLeft: '4px' }}>
           {currentGamer === 1 ? (
             <CloseOutlinedIcon id="1" style={{ color: '#0b24fb' }} />
           ) : (
@@ -257,9 +205,9 @@ function Board1() {
             />
           )}
         </div>
-      </div>
+      </div> */}
 
-      <div className={styles.playerBox}>
+      {/* <div className={styles.playerBox}>
         <FormControlLabel
           control={
             <Checkbox
@@ -271,7 +219,7 @@ function Board1() {
           }
           label="Play with computer"
         />
-      </div>
+      </div> */}
 
       <div
         className={styles.container}
@@ -284,7 +232,8 @@ function Board1() {
         ))}
       </div>
 
-      {isWinner && (
+      {isWinner && <Winner currentGamer={currentGamer} />}
+      {/* {isWinner && (
         <div className={styles.winBox}>
           {currentGamer === 1 ? (
             <CloseOutlinedIcon
@@ -292,8 +241,8 @@ function Board1() {
               style={{
                 color: '#0b24fb',
                 fontSize: '1.5em',
-                paddingTop: '8px',
                 paddingRight: '6px',
+                alignSelf: 'center',
               }}
             />
           ) : (
@@ -302,8 +251,8 @@ function Board1() {
               style={{
                 color: '#fc2e34',
                 fontSize: '1.5em',
-                paddingTop: '8px',
                 paddingRight: '6px',
+                alignSelf: 'center',
               }}
             />
           )}
@@ -311,7 +260,7 @@ function Board1() {
             - you win!!!
           </h2>
         </div>
-      )}
+      )} */}
 
       {isNoWinner && (
         <div className={styles.winBox}>
@@ -319,7 +268,12 @@ function Board1() {
         </div>
       )}
 
-      <Button
+      <ControlButtons
+        isGameOver={isGameOver}
+        restartHandler={restartHandler}
+        firstStepHandler={firstStepHandler}
+      />
+      {/* <Button
         variant="contained"
         size="large"
         color="primary"
@@ -338,8 +292,15 @@ function Board1() {
         >
           Choice first step
         </Button>
-      )}
+      )} */}
+
       {isGameOver && isFirstStepChoice && (
+        <ChoiceFirst
+          currentGamer={currentGamer}
+          ChoiceFirstStep={ChoiceFirstStep}
+        />
+      )}
+      {/* {isGameOver && isFirstStepChoice && (
         <div onClick={ChoiceFirstStep} className={styles.containerFirstStep}>
           <CloseOutlinedIcon
             id="1"
@@ -352,9 +313,9 @@ function Board1() {
             className={currentGamer === 2 ? styles.signSelected : styles.sign}
           />
         </div>
-      )}
+      )} */}
     </>
   );
 }
 
-export default Board1;
+export default Board;

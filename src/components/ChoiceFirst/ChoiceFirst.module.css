@@ -1,0 +1,15 @@
+.containerFirstStep {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 160px;
+}
+
+.sign {
+  cursor: pointer;
+}
+
+.signSelected {
+  border: 1px solid #fff;
+  border-radius: 4px;
+}

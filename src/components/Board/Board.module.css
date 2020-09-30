@@ -1,13 +1,14 @@
-.scoreBox,
-.playerBox,
+/* .scoreBox, */
+/* .playerBox, */
 .winBox {
   margin-bottom: 6px;
   display: flex;
 }
-
+/* 
 .playerBox {
   font-size: 1.2rem;
-}
+  line-height: 1.2rem;
+} */
 
 .container {
   display: flex;
@@ -47,7 +48,7 @@
   cursor: pointer;
 }
 
-.containerFirstStep {
+/* .containerFirstStep {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -61,4 +62,4 @@
 .signSelected {
   border: 1px solid #fff;
   border-radius: 4px;
-}
+} */
