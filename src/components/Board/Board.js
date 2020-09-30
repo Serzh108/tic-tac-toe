@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import RadioButtonUncheckedOutlinedIcon from '@material-ui/icons/RadioButtonUncheckedOutlined';
 import CloseOutlinedIcon from '@material-ui/icons/CloseOutlined';
-// import Button from '@material-ui/core/Button';
-// import Checkbox from '@material-ui/core/Checkbox';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
 import InformPanel from '../InformPanel/InformPanel.tsx';
 import Winner from '../Winner/Winner';
 import ControlButtons from '../ControlButtons/ControlButtons';
 import ChoiceFirst from '../ChoiceFirst/ChoiceFirst';
+import compStep from '../../services/services.ts';
 import styles from './Board.module.css';
 
 const initialField = [null, null, null, null, null, null, null, null, null];
@@ -15,18 +13,8 @@ const initialScore = {
   1: 0,
   2: 0,
 };
-const initialGameState = {
-  currentGamer: 1,
-  isGameOver: true,
-  isWinner: false,
-  isNoWinner: false,
-  score: {
-    1: 0,
-    2: 0,
-  },
-};
 
-function Board() {
+export default function Board() {
   const [field, setField] = useState(initialField);
   const [currentGamer, setCurrentGamer] = useState(1);
   const [isFirstStepChoice, setisFirstStepChoice] = useState(false);
@@ -39,23 +27,6 @@ function Board() {
   const handleCheckbox = event => {
     setIsCompGamer(event.target.checked);
   };
-
-  const [gameState, setGameState] = useState(initialGameState);
-  // console.log('gameState.score = ', gameState.score[1]);
-
-  const compStep = curField => {
-    let next;
-    do {
-      next = Math.floor(Math.random() * 9);
-    } while (curField[next] !== null);
-    return next;
-  };
-
-  useEffect(() => {
-    console.log('Rendered! (from useEffect)');
-    // setGameState(prev => ({...prev, "currentGamer": 2}));
-    // setGameState(prev => ({...prev, "score": {...prev.score, 1: 5}}));
-  }, []);
 
   const selectContent = item => {
     if (item === 2)
@@ -179,47 +150,6 @@ function Board() {
         isGameOver={isGameOver}
         handleCheckbox={handleCheckbox}
       />
-      {/* <div className={styles.scoreBox}>
-        <div>{`Game score: ${score[1]} (`}</div>
-        <div style={{ paddingTop: '4px' }}>
-          <CloseOutlinedIcon id="1" style={{ color: '#0b24fb' }} />
-        </div>
-        <div>{`) : ${score[2]} (`}</div>
-        <div style={{ paddingTop: '4px' }}>
-          <RadioButtonUncheckedOutlinedIcon
-            id="2"
-            style={{ color: '#fc2e34' }}
-          />
-        </div>
-        {') '}
-      </div>
-      <div className={styles.playerBox}>
-        <p>Current player :</p>
-        <div style={{ paddingLeft: '4px' }}>
-          {currentGamer === 1 ? (
-            <CloseOutlinedIcon id="1" style={{ color: '#0b24fb' }} />
-          ) : (
-            <RadioButtonUncheckedOutlinedIcon
-              id="2"
-              style={{ color: '#fc2e34' }}
-            />
-          )}
-        </div>
-      </div> */}
-
-      {/* <div className={styles.playerBox}>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={isCompGamer}
-              color="primary"
-              onChange={isGameOver ? handleCheckbox : undefined}
-              inputProps={{ 'aria-label': 'primary checkbox' }}
-            />
-          }
-          label="Play with computer"
-        />
-      </div> */}
 
       <div
         className={styles.container}
@@ -233,34 +163,6 @@ function Board() {
       </div>
 
       {isWinner && <Winner currentGamer={currentGamer} />}
-      {/* {isWinner && (
-        <div className={styles.winBox}>
-          {currentGamer === 1 ? (
-            <CloseOutlinedIcon
-              id="1"
-              style={{
-                color: '#0b24fb',
-                fontSize: '1.5em',
-                paddingRight: '6px',
-                alignSelf: 'center',
-              }}
-            />
-          ) : (
-            <RadioButtonUncheckedOutlinedIcon
-              id="2"
-              style={{
-                color: '#fc2e34',
-                fontSize: '1.5em',
-                paddingRight: '6px',
-                alignSelf: 'center',
-              }}
-            />
-          )}
-          <h2 style={{ color: currentGamer === 1 ? '#0b24fb' : '#fc2e34' }}>
-            - you win!!!
-          </h2>
-        </div>
-      )} */}
 
       {isNoWinner && (
         <div className={styles.winBox}>
@@ -273,26 +175,6 @@ function Board() {
         restartHandler={restartHandler}
         firstStepHandler={firstStepHandler}
       />
-      {/* <Button
-        variant="contained"
-        size="large"
-        color="primary"
-        style={{ marginBottom: '20px' }}
-        onClick={restartHandler}
-      >
-        {isGameOver ? 'Start' : 'Restart'}
-      </Button>
-      {isGameOver && (
-        <Button
-          variant="contained"
-          size="large"
-          color="primary"
-          style={{ marginBottom: '10px' }}
-          onClick={firstStepHandler}
-        >
-          Choice first step
-        </Button>
-      )} */}
 
       {isGameOver && isFirstStepChoice && (
         <ChoiceFirst
@@ -300,22 +182,6 @@ function Board() {
           ChoiceFirstStep={ChoiceFirstStep}
         />
       )}
-      {/* {isGameOver && isFirstStepChoice && (
-        <div onClick={ChoiceFirstStep} className={styles.containerFirstStep}>
-          <CloseOutlinedIcon
-            id="1"
-            style={{ color: '#0b24fb', fontSize: '40' }}
-            className={currentGamer === 1 ? styles.signSelected : styles.sign}
-          />
-          <RadioButtonUncheckedOutlinedIcon
-            id="2"
-            style={{ color: '#fc2e34', fontSize: '40' }}
-            className={currentGamer === 2 ? styles.signSelected : styles.sign}
-          />
-        </div>
-      )} */}
     </>
   );
 }
-
-export default Board;
