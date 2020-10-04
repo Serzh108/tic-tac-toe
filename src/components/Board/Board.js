@@ -58,8 +58,7 @@ export default function Board() {
     if (isCompGamer && !finishGame) {
       let compGamer = 2;
       currentGamer === 1 ? (compGamer = 2) : (compGamer = 1);
-      // arr[compStep(arr)] = compGamer;
-      arr[compStep(arr, undefined)] = compGamer;
+      arr[compStep(arr, currentGamer)] = compGamer;
       setField([...arr]);
       checkResult(arr);
     }
@@ -97,12 +96,7 @@ export default function Board() {
       const rowArr = [];
       for (let i = j * 3; i < 3 * (j + 1); i++) rowArr.push(fieldArr[i]);
       if (verify(rowArr)) gameOver = true;
-      // ==============
-      // compStep(fieldArr, rowArr);
-      const yy = compStep(fieldArr, rowArr);
-      console.log('j = ', j, ' yy = ', yy);
-      // console.log('index = ', y + j * 3);
-      // ==============
+
       const columnArr = [];
       for (let i = 0; i < 3; i++) columnArr.push(fieldArr[i * 3 + j]);
       if (verify(columnArr)) gameOver = true;
